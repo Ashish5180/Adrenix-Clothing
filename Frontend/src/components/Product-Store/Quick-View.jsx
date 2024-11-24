@@ -15,6 +15,7 @@ export default function QuickView({ open, setOpen, product }) {
   const sizes = [product.size1, product.size2, product.size3, product.size4].filter(
     (size) => size // Filter out empty sizes
   );
+  console.log(product._id)
 
   return (
     <>
@@ -98,7 +99,7 @@ export default function QuickView({ open, setOpen, product }) {
                       }
                       dispatch(
                         addItem({
-                          id: product.id,
+                          id: product._id,
                           name: product.name,
                           image: product.image,
                           price: product.price,
