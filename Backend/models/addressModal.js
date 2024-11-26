@@ -1,6 +1,8 @@
 // models/Address.js
 import mongoose from "mongoose";
 
+// Address Schema for storing address
+
 const addressSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   street: String,
@@ -11,5 +13,6 @@ const addressSchema = new mongoose.Schema({
   zip: String,
   
 });
+
 
 export default mongoose.model("Address", addressSchema);

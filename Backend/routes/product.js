@@ -26,7 +26,7 @@ const upload = multer({ storage });
 // POST /api/products
 router.post('/', upload.single('image'), async (req, res) => {
   try {
-    const { name, price, size1, size2, size3,size4, color } = req.body;
+    const { name, price, size1, size2, size3,size4, color, stock } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: 'Image is required' });
@@ -40,6 +40,7 @@ router.post('/', upload.single('image'), async (req, res) => {
       size3,
       size4,
       color,
+      stock,
       price,
     });
 
@@ -50,6 +51,9 @@ router.post('/', upload.single('image'), async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+
+// get all orders
 
 router.get('/', async (req, res) => {
     try {

@@ -1,4 +1,5 @@
 import Order from '../models/orderModal.js'; // Ensure this path is correct
+import Product from '../models/productModal.js'; // Ensure this path is correct
 import nodemailer from 'nodemailer'; // Import nodemailer
 
 // Create a transporter for sending emails
@@ -6,10 +7,12 @@ const transporter = nodemailer.createTransport({
   service: 'gmail', // Use Gmail as the email service
   auth: {
     user: 'adrenix.store@gmail.com', // Your Gmail address
-    pass: 'uppp wwpi oang lqin ', // Your Gmail password or app password
+    pass: 'uppp wwpi oang lqin', // Your Gmail password or app password
   },
 });
 
+
+// Create a new order
 export const createOrder = async (req, res) => {
   const { userId, userName, products, address, paymentMethod, totalAmount } = req.body;
 
@@ -29,6 +32,31 @@ export const createOrder = async (req, res) => {
 
     const savedOrder = await newOrder.save();
 
+    // Update stock for each product in the order
+    for (const product of products) {
+      const { id, quantity } = product;
+     
+      
+      
+      
+      // Decrement stock in the product model
+      const updatedProduct = await Product.findByIdAndUpdate(
+        id,
+        { $inc: { stock: -quantity } },
+        { new: true }
+      );
+
+      if (!updatedProduct) {
+        return res.status(404).json({ message: `Product with ID ${id} not found` });
+      }
+
+      if (updatedProduct.stock < 0) {
+        return res.status(400).json({ message: `Insufficient stock for product ${id}` });
+      }
+    }
+
+
+    
     // Prepare email details
     const mailOptions = {
       from: 'adrenix.store@gmail.com', // Sender address

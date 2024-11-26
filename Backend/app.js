@@ -10,7 +10,12 @@ import path from 'path';
 import userRoutes from './routes/user.js';
 
 const app = express();
+
+// Cookie Parser
 app.use(cookieParser());
+
+
+// Cors Setup for Frontend 
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true, // Allows cookies to be sent with requests
@@ -22,12 +27,16 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const __dirname = path.resolve();
+
+// For Image upload using multer
 app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
 
 
+// Check Server is running
 app.get("/", (req, res) => {
     res.send("Server is running");
 })
+
 
 // Register the user routes
 app.use('/api/users', userRoutes);
@@ -36,16 +45,21 @@ app.use('/api/users', userRoutes);
 app.post("/signup", signUp);
 
 
+// Login Routes
+app.use(authRoutes);
 
+// Address Route
 app.use("/api", addressRoute);
+
 
 // create and get orders
 app.use('/api/orders', orderRoutes);
 
-app.use(authRoutes);
 
 // create and get products
 app.use('/api/products', productRoutes);
+
+
 
 
 

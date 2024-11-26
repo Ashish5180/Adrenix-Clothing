@@ -1,10 +1,15 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; 
 import userModal from "../models/userModal.js";
+
+
+
 const JWT_SECRET = "clothing-store"; // Replace with a strong secret key
 const SALT_ROUNDS = 10; // Number of salt rounds for bcrypt
 
 
+
+// Create a new user account
 const signUp = async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -12,6 +17,7 @@ const signUp = async (req, res) => {
         return res.status(400).json({ error: "Missing required fields" });
     }
 
+    // Check if the user already exists
     let user = await userModal.findOne({ email });
 
     if (user) {
@@ -32,6 +38,8 @@ const signUp = async (req, res) => {
         httpOnly: true,      // Ensures the cookie is not accessible via JavaScript
     });
     
+
+    // Send a success response
     res.json({
         message: "Sign Up successfully",
         user: {

@@ -12,8 +12,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
 const router = express.Router();
 
+// Create a new order
 router.post('/', createOrder);
 
 // Fetch user orders
@@ -66,10 +68,13 @@ router.put('/:id/cancel', async (req, res) => {
 
 // Assuming you already have the required imports at the top of your file
 
+
 // Return and Replace Order
 router.put('/:id/return', async (req, res) => {
   const { id } = req.params;
 
+
+  // Find order and update 
   try {
       const order = await Order.findByIdAndUpdate(id, { status: 'Return Initiated' }, { new: true });
       if (!order) {
@@ -84,6 +89,8 @@ router.put('/:id/return', async (req, res) => {
           text: `Return initiated for Order ID: ${id}\nUser: ${order.userName}\nProducts: ${JSON.stringify(order.products)}`,
       };
 
+
+      // Sending Mails
       transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
               console.error('Error sending email:', error);

@@ -296,13 +296,22 @@ const Cart = () => {
             </div>
 
             {/* Place Order Button */}
-            <button
-              type="button"
-              className="mt-6 w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:ring focus:ring-green-200"
-              onClick={handlePlaceOrder}
-            >
-              Place Order
-            </button>
+            {/* Place Order Button */}
+<button
+  type="button"
+  className={`mt-6 w-full px-4 py-2 rounded-md ${
+    cartItems.length === 0 || !userAddress || userAddress === "Failed to fetch address"
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-green-600 hover:bg-green-700 focus:ring focus:ring-green-200"
+  }`}
+  onClick={handlePlaceOrder}
+  disabled={
+    cartItems.length === 0 || !userAddress || userAddress === "Failed to fetch address"
+  }
+>
+  Place Order
+</button>
+
           </motion.div>
         </div>
       </div>

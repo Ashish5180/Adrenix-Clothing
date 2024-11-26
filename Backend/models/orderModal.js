@@ -1,6 +1,8 @@
 // models/Order.js
 import mongoose from 'mongoose';
 
+
+//order schema for storing  order
 const orderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   userName: { type: String, required: true },

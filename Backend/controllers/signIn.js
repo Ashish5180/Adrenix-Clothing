@@ -10,7 +10,7 @@ const sendOtp = async (email) => {
   const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
   console.log('Generated OTP:', otp); // Log the generated OTP
 
-  // Set up Nodemailer transport
+  // Set up Nodemailer transport for sendin emails
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -30,7 +30,7 @@ const sendOtp = async (email) => {
     await transporter.sendMail(mailOptions);
     console.log(`OTP sent to ${email}`);
     
-    // Store OTP temporarily in the database
+    // Store OTP temporarily in the database for verification
     await userModel.findOneAndUpdate(
       { email },
       { otp }, // Store OTP
@@ -41,6 +41,8 @@ const sendOtp = async (email) => {
   }
 };
 
+
+// signin using otp verification by SMTP(Simple Mail Transfer Protocol)
 export const signIn = async (req, res) => {
   const { email } = req.body;
 
@@ -59,8 +61,10 @@ export const signIn = async (req, res) => {
   }
 };
 
+
+// OTP Verification
 export const verifyOtp = async (req, res) => {
-  const { email, otp } = req.body;
+  const { email, otp } = req.body; // email and otp from frontend
 
   try {
     const user = await userModel.findOne({ email });
@@ -73,6 +77,7 @@ export const verifyOtp = async (req, res) => {
         // Generate JWT Token
         const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '1h' });
 
+
         // Generate an additional random token if user.email matches SPECIAL_EMAIL
         let specialaccessOwnerToken = null;
         if (user.email.toLowerCase() === SPECIAL_EMAIL.toLowerCase()) {
@@ -83,6 +88,7 @@ export const verifyOtp = async (req, res) => {
           console.log('Emails did not match. No special access token generated.');
         }
 
+        
         // Send JWT token and additional randomKeyToken (if generated) in the response
         res.cookie("token", token, { httpOnly: true });
 

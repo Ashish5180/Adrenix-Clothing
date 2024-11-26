@@ -9,11 +9,16 @@ router.post("/address", async (req, res) => {
   try {
     const { street, city, phone, zip, country, userId } = req.body;
 
+
     // Ensure userId is provided in the request body
     if (!userId) {
       return res.status(400).json({ error: "User ID is required" });
     }
 
+
+    
+
+    // Check existing address
     const existingAddress = await Address.findOne({ userId });
     if (existingAddress) {
       existingAddress.street = street;
@@ -32,6 +37,8 @@ router.post("/address", async (req, res) => {
   }
 });
 
+
+
 // Get Address
 router.get("/address", async (req, res) => {
   try {
@@ -49,5 +56,6 @@ router.get("/address", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 export default router;

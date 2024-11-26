@@ -11,6 +11,7 @@ function CreateProducts() {
     size3: '',
     size4: '',
     color: '',
+    stock: '',
     price: '',
   });
 
@@ -45,6 +46,7 @@ function CreateProducts() {
     formData.append('size3', productData.size3);
     formData.append('size4', productData.size4);
     formData.append('color', productData.color);
+    formData.append('stock', productData.stock);
     formData.append('price', productData.price);
 
     try {
@@ -55,7 +57,7 @@ function CreateProducts() {
       });
       setSuccessMessage('Product created successfully!');
       setErrorMessage('');
-      setProductData({ name: '', size1: '', size2: '', size3: '', size4: '', color: '', price: '' });
+      setProductData({ name: '', size1: '', size2: '', size3: '', size4: '', color: '', stock: '', price: '' });
       setImage(null);
       console.log(response.data);
     } catch (error) {
@@ -177,6 +179,21 @@ function CreateProducts() {
               type="text"
               name="color"
               value={productData.color}
+              onChange={handleInput}
+              placeholder="Enter product color"
+              className="w-full mt-2 p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all"
+              required
+            />
+          </div>
+
+          {/* Product Stock */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Total Stock</label>
+            <motion.input
+              whileFocus={{ scale: 1.02 }}
+              type="text"
+              name="stock"
+              value={productData.stock}
               onChange={handleInput}
               placeholder="Enter product color"
               className="w-full mt-2 p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all"
